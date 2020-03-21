@@ -1,7 +1,7 @@
 package com.intellij.librarymanager.model;
 
+
 import java.time.LocalDate;
-//import com.sun.*;
 
 public class Emprunt {
     private Integer id;
@@ -11,15 +11,23 @@ public class Emprunt {
     private LocalDate dateRetour;
 
     public Emprunt(){}
-    public Emprunt(Integer id, Integer idMembre, Integer idLivre, LocalDate dateEmprunt, LocalDate dateRetour)
+    public Emprunt(Integer idMembre, Integer idLivre,
+                    LocalDate dateEmprunt, LocalDate dateRetour)
     {
         this();
-        this.id = id;
         this.idMembre = idMembre;
         this.idLivre = idLivre;
         this.dateEmprunt = dateEmprunt;
         this.dateRetour = dateRetour;
     }
+
+    public Emprunt(Integer id, Integer idMembre, Integer idLivre,
+                   LocalDate dateEmprunt, LocalDate dateRetour)
+    {
+        this(idMembre, idLivre, dateEmprunt, dateRetour);
+        this.id = id;
+    }
+
     public Integer getId(){return id;}
     public void setId(Integer id){this.id = id;}
     public Integer getIdMembre(){return idMembre;}
@@ -35,10 +43,10 @@ public class Emprunt {
     public String toString()
     {
         return getClass().getSimpleName()+"{"
-                +"id "+id+","
-                +"idMembre " +idMembre+","
-                +"idLibre "+idLivre+","
-                +"dateEmprunt "+dateEmprunt+","
-                +"dateRetour "+dateRetour+"}";
+                +"id: "+id+","
+                +"idMembre: " +idMembre+","
+                +"idLibre: "+idLivre+","
+                +"dateEmprunt: "+dateEmprunt+","
+                +"dateRetour: "+dateRetour+"}";
     }
 }

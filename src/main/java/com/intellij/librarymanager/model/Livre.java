@@ -48,9 +48,9 @@ public class Livre {
     @Override
     public String toString(){
         return getClass().getSimpleName()+"{"
-                +"id "+id+","
-                +"titre "+titre+","
-                +"auteur "+auteur+","
-                +"isbn "+isbn+"}";
+                +"id: "+id+","
+                +"titre: "+titre+","
+                +"auteur: "+auteur+","
+                +"isbn: "+isbn+"}";
     }
 }

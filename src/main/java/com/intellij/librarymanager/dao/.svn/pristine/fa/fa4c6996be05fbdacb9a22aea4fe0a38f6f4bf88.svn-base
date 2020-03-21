@@ -26,12 +26,11 @@ public class MembreDaoImpl implements MembreDao{
 		return instance;
 	}
 	
-	private static final String CREATE_QUERY = "INSERT INTO Membre (nom, prenom, address, email, telephone, abonnement) VALUES (?, ?, ?, ? ,?, ?);";
+	private static final String CREATE_QUERY = "INSERT INTO Membre (nom, pr��nom, address, email, t��l��phone, abonnement) VALUES (?, ?, ?, ? ,?, ?);";
 	private static final String SELECT_ONE_QUERY = "SELECT * FROM Membre WHERE id=?;";
 	private static final String SELECT_ALL_QUERY = "SELECT * FROM Membre;";
 	private static final String UPDATE_QUERY = "UPDATE Membre SET nom=?, prenom=?, address=?, email=?, telephone=?, abonnement=? WHERE id=?;";
 	private static final String DELETE_QUERY = "DELETE FROM Membre WHERE id=?;";
-	private static final String COUNT_QUERY = "SELECT COUNT(id) AS count FROM membre;";
 	
 	@Override
 	public Membre getById(int id) throws DaoException{
@@ -80,7 +79,7 @@ public class MembreDaoImpl implements MembreDao{
 	}
 
 	@Override
-	public int create(String nom, String prenom, String address, String email, String telephone, Abonnement abonnement) throws DaoException {
+	public int create(String nom, String prenom, String address, String email, String telephone) throws DaoException {
 		ResultSet res = null;
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -93,7 +92,6 @@ public class MembreDaoImpl implements MembreDao{
 			preparedStatement.setString(3, address);
 			preparedStatement.setString(4, email);
 			preparedStatement.setString(5, telephone);
-			//preparedStatement.setString(6, (String)abonnement);
 			preparedStatement.executeUpdate();
 			res = preparedStatement.getGeneratedKeys();
 			if(res.next()){
@@ -140,7 +138,7 @@ public class MembreDaoImpl implements MembreDao{
 			}
 			System.out.println("GET: " + membres);
 		} catch (SQLException e) {
-			throw new DaoException("Probleme lors de la recuperation de la liste des membres", e);
+			throw new DaoException("Probleme lors de la r�cup�ration de la liste des films", e);
 		}
 		return membres;
 	}
@@ -191,7 +189,7 @@ public class MembreDaoImpl implements MembreDao{
 
 			System.out.println("UPDATE: " + membre);
 		} catch (SQLException e) {
-			throw new DaoException("Probleme lors de la mise a jour du livre: " + membre, e);
+			throw new DaoException("Probl��me lors de la mise �� jour du livre: " + membre, e);
 		} finally {
 			try {
 				preparedStatement.close();
@@ -208,38 +206,7 @@ public class MembreDaoImpl implements MembreDao{
 	
 	@Override
 	public int count() throws DaoException{
-		ResultSet res = null;
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		int resultat = -1;
-		try {
-			connection = ConnectionManager.getConnection();
-			preparedStatement = connection.prepareStatement(COUNT_QUERY);
-			res = preparedStatement.executeQuery();
-			if(res.next()) {
-				resultat = res.getInt("count");
-			}
-			System.out.println("Compter le nombre des membres");
-		} catch (SQLException e) {
-			throw new DaoException("Probleme lors du compte des membres", e);
-		} finally {
-			try {
-				res.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				preparedStatement.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return resultat;
+		return 0;
 	}
 	
 }
