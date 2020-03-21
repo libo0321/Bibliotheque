@@ -93,7 +93,7 @@ public class MembreDaoImpl implements MembreDao{
 			preparedStatement.setString(3, address);
 			preparedStatement.setString(4, email);
 			preparedStatement.setString(5, telephone);
-			//preparedStatement.setString(6, (String)abonnement);
+			preparedStatement.setString(6, abonnement.toString());
 			preparedStatement.executeUpdate();
 			res = preparedStatement.getGeneratedKeys();
 			if(res.next()){

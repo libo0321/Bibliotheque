@@ -16,6 +16,8 @@ public class ModeleTest {
         LocalDate ld2 = LocalDate.of(2019, 2, 19);
         Emprunt emprunt = new Emprunt(1, 2, 1,ld1,ld2);
         System.out.println(emprunt);
+        Abonnement abonnement = Abonnement.valueOf("VIP");
+        System.out.println(abonnement);
     }
 
 }
