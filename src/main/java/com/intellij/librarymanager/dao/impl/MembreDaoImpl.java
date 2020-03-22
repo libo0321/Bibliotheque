@@ -17,7 +17,7 @@ import com.intellij.librarymanager.dao.MembreDao;
 
 public class MembreDaoImpl implements MembreDao{
 	
-	private static MembreDaoImpl instance;
+	private static MembreDao instance;
 	private MembreDaoImpl() { }	
 	public static MembreDao getInstance() {
 		if(instance == null) {
@@ -26,10 +26,10 @@ public class MembreDaoImpl implements MembreDao{
 		return instance;
 	}
 	
-	private static final String CREATE_QUERY = "INSERT INTO Membre (nom, prenom, address, email, telephone, abonnement) VALUES (?, ?, ?, ? ,?, ?);";
+	private static final String CREATE_QUERY = "INSERT INTO Membre (nom, prenom, adresse, email, telephone, abonnement) VALUES (?, ?, ?, ? ,?, ?);";
 	private static final String SELECT_ONE_QUERY = "SELECT * FROM Membre WHERE id=?;";
-	private static final String SELECT_ALL_QUERY = "SELECT * FROM Membre;";
-	private static final String UPDATE_QUERY = "UPDATE Membre SET nom=?, prenom=?, address=?, email=?, telephone=?, abonnement=? WHERE id=?;";
+	private static final String SELECT_ALL_QUERY = "SELECT * FROM Membre ORDER BY nom, prenom;";
+	private static final String UPDATE_QUERY = "UPDATE Membre SET nom=?, prenom=?, adresse=?, email=?, telephone=?, abonnement=? WHERE id=?;";
 	private static final String DELETE_QUERY = "DELETE FROM Membre WHERE id=?;";
 	private static final String COUNT_QUERY = "SELECT COUNT(id) AS count FROM membre;";
 	
@@ -48,7 +48,7 @@ public class MembreDaoImpl implements MembreDao{
 				membre.setId(res.getInt("id"));
 				membre.setNom(res.getString("nom"));
 				membre.setPrenom(res.getString("prenom"));		
-				membre.setAdresse(res.getString("address"));
+				membre.setAdresse(res.getString("adresse"));
 				membre.setEmail(res.getString("email"));
 				membre.setTelephone(res.getString("telephone"));
 				Abonnement abonnement = Abonnement.valueOf(res.getString("abonnement"));
@@ -56,7 +56,7 @@ public class MembreDaoImpl implements MembreDao{
 				
 			}
 			
-			System.out.println("GET: " + membre);
+			System.out.println("GET a member : " + membre);
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la ... du membre: id=" + id, e);
 		} finally {
@@ -100,7 +100,9 @@ public class MembreDaoImpl implements MembreDao{
 				id = res.getInt(1);				
 			}
 
-			System.out.println("CREATE a membre");
+			System.out.println("CREATE a membre with nom="+nom+
+								" prenom="+prenom+" address="+address+" email="+email+
+								" telephone="+telephone+" abonnement="+abonnement);
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la creation du membre", e);
 		} finally {
@@ -128,17 +130,21 @@ public class MembreDaoImpl implements MembreDao{
 	public List<Membre> getList() throws DaoException {
 		List<Membre> membres = new ArrayList<>();
 		
-		try (Connection connection = ConnectionManager.getConnection();
-			 PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
-			 ResultSet res = preparedStatement.executeQuery();
-				){
+		try {
+			Connection connection = ConnectionManager.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+			ResultSet res = preparedStatement.executeQuery();
 			while(res.next()) {
 				Abonnement abonnement = Abonnement.valueOf(res.getString("abonnement"));
 				Membre f = new Membre(res.getInt("id"), res.getString("nom"), res.getString("prenom"), 
-							res.getString("address"),res.getString("email"),res.getString("telephone"), abonnement);
+							res.getString("adresse"),res.getString("email"),res.getString("telephone"), abonnement);
 				membres.add(f);
 			}
-			System.out.println("GET: " + membres);
+			System.out.println("GET all membres : ");
+			for(int i=0; i<membres.size(); i++)
+			{
+				System.out.println(membres.get(i));
+			}
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la recuperation de la liste des membres", e);
 		}
@@ -156,7 +162,7 @@ public class MembreDaoImpl implements MembreDao{
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 			connection.close();
-			System.out.println("DELETE the member " );
+			System.out.println("DELETE the member with id="+id );
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la suppression du membre ", e);
 		}  finally {
@@ -189,7 +195,7 @@ public class MembreDaoImpl implements MembreDao{
 			preparedStatement.setInt(7, membre.getId());
 			preparedStatement.executeUpdate();
 
-			System.out.println("UPDATE: " + membre);
+			System.out.println("UPDATE the member : " + membre);
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la mise a jour du livre: " + membre, e);
 		} finally {

@@ -20,50 +20,51 @@ public class EmpruntDaoImpl implements EmpruntDao{
 	private EmpruntDaoImpl() { }	
 	public static EmpruntDao getInstance() {
 		if(instance == null) {
+
 			instance = new EmpruntDaoImpl();
 		}
 		return instance;
 	}
-	
+
 	private static final String CREATE_QUERY = "INSERT INTO Emprunt (idMembre, idLivre, dateEmprunt, dateRetour) VALUES (?, ?, ?, ?);";
-	private static final String SELECT_ONE_QUERY = "SELECT e.id AS idEmprunt, idMembre, nom, prenom, adresse, email," +
-			"telephone, abonnement, idLivre, titre, auteur, isbn, dateEmprunt,\n" +
-			"dateRetour" +
-			"FROM emprunt AS e" +
-			"INNER JOIN membre ON membre.id = e.idMembre" +
-			"INNER JOIN livre ON livre.id = e.idLivre" +
+	private static final String SELECT_ONE_QUERY = "SELECT e.id AS idEmprunt, idMembre, nom, prenom, adresse, email, " +
+			"telephone, abonnement, idLivre, titre, auteur, isbn, dateEmprunt, " +
+			"dateRetour " +
+			"FROM emprunt AS e " +
+			"INNER JOIN membre ON membre.id = e.idMembre " +
+			"INNER JOIN livre ON livre.id = e.idLivre " +
 			"WHERE e.id = ?;";
 
 	private static final String SELECT_ALL_QUERY = "SELECT e.id AS id, idMembre, nom, prenom, adresse, email," +
 			"telephone, abonnement, idLivre, titre, auteur, isbn, dateEmprunt," +
-			"dateRetour" +
-			"FROM emprunt AS e" +
-			"INNER JOIN membre ON membre.id = e.idMembre" +
-			"INNER JOIN livre ON livre.id = e.idLivre" +
+			"dateRetour " +
+			"FROM emprunt AS e " +
+			"INNER JOIN membre ON membre.id = e.idMembre " +
+			"INNER JOIN livre ON livre.id = e.idLivre " +
 			"ORDER BY dateRetour DESC;";
 
 	private static final String SELECT_NON_RENDU_QUERY = "SELECT e.id AS id, idMembre, nom, prenom, adresse, email," +
 			"telephone, abonnement, idLivre, titre, auteur, isbn, dateEmprunt," +
-			"dateRetour" +
-			"FROM emprunt AS e" +
-			"INNER JOIN membre ON membre.id = e.idMembre" +
-			"INNER JOIN livre ON livre.id = e.idLivre" +
+			"dateRetour " +
+			"FROM emprunt AS e " +
+			"INNER JOIN membre ON membre.id = e.idMembre " +
+			"INNER JOIN livre ON livre.id = e.idLivre " +
 			"WHERE dateRetour IS NULL;";
 
 	private static final String SELECT_NON_RENDU_BY_MEMBRE_QUERY = "SELECT e.id AS id, idMembre, nom, prenom, adresse, email," +
 			"telephone, abonnement, idLivre, titre, auteur, isbn, dateEmprunt,\n" +
-			"dateRetour" +
-			"FROM emprunt AS e" +
-			"INNER JOIN membre ON membre.id = e.idMembre" +
-			"INNER JOIN livre ON livre.id = e.idLivre" +
+			"dateRetour " +
+			"FROM emprunt AS e " +
+			"INNER JOIN membre ON membre.id = e.idMembre " +
+			"INNER JOIN livre ON livre.id = e.idLivre " +
 			"WHERE dateRetour IS NULL AND membre.id = ?;";
 
 	private static final String SELECT_NON_RENDU_BY_LIVRE_QUERY= "SELECT e.id AS id, idMembre, nom, prenom, adresse, email," +
 			"telephone, abonnement, idLivre, titre, auteur, isbn, dateEmprunt," +
-			"dateRetour" +
-			"FROM emprunt AS e" +
-			"INNER JOIN membre ON membre.id = e.idMembre" +
-			"INNER JOIN livre ON livre.id = e.idLivre" +
+			"dateRetour " +
+			"FROM emprunt AS e " +
+			"INNER JOIN membre ON membre.id = e.idMembre " +
+			"INNER JOIN livre ON livre.id = e.idLivre " +
 			"WHERE dateRetour IS NULL AND livre.id = ?;";
 
 	private static final String UPDATE_QUERY = "UPDATE emprunt SET idMembre=?, idLivre=?, dateEmprunt=?,dateRetour=? WHERE id=?;";
@@ -74,21 +75,34 @@ public class EmpruntDaoImpl implements EmpruntDao{
 	public List<Emprunt> getList() throws DaoException {
 		List<Emprunt> emprunts = new ArrayList<>();
 
-		try (Connection connection = ConnectionManager.getConnection();
-			 PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
-			 ResultSet res = preparedStatement.executeQuery();
-		){
+		try {
+			Connection connection = ConnectionManager.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+			ResultSet res = preparedStatement.executeQuery();
+
 			while(res.next()) {
-				Emprunt f = new Emprunt(res.getInt("id"), res.getInt("idMembre"), res.getInt("idLivre"),
-						LocalDate.parse(res.getString("dateEmprunt")), LocalDate.parse(res.getString("dateRetour")));
-				emprunts.add(f);
+				Emprunt f;
+				String retour = res.getString("dateRetour");
+				if (retour!=null){
+					f = new Emprunt(res.getInt("id"), res.getInt("idMembre"), res.getInt("idLivre"),
+							LocalDate.parse(res.getString("dateEmprunt")), LocalDate.parse(retour));
+				}
+				else
+					f = new Emprunt(res.getInt("id"), res.getInt("idMembre"), res.getInt("idLivre"),
+						LocalDate.parse(res.getString("dateEmprunt")));
 				f.setMembre(res.getInt("idMembre"),
 						res.getString("nom"), res.getString("prenom"), res.getString("adresse"),
 						res.getString("email"), res.getString("telephone"), res.getString("abonnement"));
 				f.setLivre(res.getInt("idLivre"),
 						res.getString("titre"),res.getString("auteur"),res.getString("isbn"));
+				emprunts.add(f);
+
 			}
-			System.out.println("GET: " + emprunts);
+			System.out.println("GET all emprunts : " );
+			for(int i=0; i<emprunts.size(); i++)
+			{
+				System.out.println(emprunts.get(i));
+			}
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la recuperation de la liste des emprunts", e);
 		}
@@ -98,21 +112,27 @@ public class EmpruntDaoImpl implements EmpruntDao{
 	public List<Emprunt> getListCurrent() throws DaoException{
 		List<Emprunt> emprunts = new ArrayList<>();
 
-		try (Connection connection = ConnectionManager.getConnection();
-			 PreparedStatement preparedStatement = connection.prepareStatement(SELECT_NON_RENDU_QUERY);
-			 ResultSet res = preparedStatement.executeQuery();
-		){
+		try {
+			Connection connection = ConnectionManager.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_NON_RENDU_QUERY);
+			ResultSet res = preparedStatement.executeQuery();
+
 			while(res.next()) {
 				Emprunt f = new Emprunt(res.getInt("id"), res.getInt("idMembre"), res.getInt("idLivre"),
-						LocalDate.parse(res.getString("dateEmprunt")), LocalDate.parse(res.getString("dateRetour")));
-				emprunts.add(f);
+						LocalDate.parse(res.getString("dateEmprunt")));
 				f.setMembre(res.getInt("idMembre"),
 						res.getString("nom"), res.getString("prenom"), res.getString("adresse"),
 						res.getString("email"), res.getString("telephone"), res.getString("abonnement"));
 				f.setLivre(res.getInt("idLivre"),
 						res.getString("titre"),res.getString("auteur"),res.getString("isbn"));
+				emprunts.add(f);
+
 			}
-			System.out.println("GET: " + emprunts);
+			System.out.println("GET all emprunts non rendu : " );
+			for(int    i=0; i<emprunts.size(); i++)
+			{
+				System.out.println(emprunts.get(i));
+			}
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la recuperation de la liste des non rendu", e);
 		}
@@ -133,15 +153,20 @@ public class EmpruntDaoImpl implements EmpruntDao{
 
 			while(res.next()) {
 				Emprunt f = new Emprunt(res.getInt("id"), res.getInt("idMembre"), res.getInt("idLivre"),
-						LocalDate.parse(res.getString("dateEmprunt")), LocalDate.parse(res.getString("dateRetour")));
-				emprunts.add(f);
+						LocalDate.parse(res.getString("dateEmprunt")));
 				f.setMembre(res.getInt("idMembre"),
 						res.getString("nom"), res.getString("prenom"), res.getString("adresse"),
 						res.getString("email"), res.getString("telephone"), res.getString("abonnement"));
 				f.setLivre(res.getInt("idLivre"),
 						res.getString("titre"),res.getString("auteur"),res.getString("isbn"));
+				emprunts.add(f);
+
 			}
-			System.out.println("GET: " + emprunts);
+			System.out.println("GET all emprunts non rendu by member : " + idMembre);
+			for(int    i=0; i<emprunts.size(); i++)
+			{
+				System.out.println(emprunts.get(i));
+			}
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la recuperation de la liste des non rendu", e);
 		}
@@ -153,15 +178,16 @@ public class EmpruntDaoImpl implements EmpruntDao{
 		ResultSet res = null;
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		try {connection = ConnectionManager.getConnection();
-			 preparedStatement = connection.prepareStatement(SELECT_NON_RENDU_BY_LIVRE_QUERY);
+		try {
+			connection = ConnectionManager.getConnection();
+			preparedStatement = connection.prepareStatement(SELECT_NON_RENDU_BY_LIVRE_QUERY);
 
-			 preparedStatement.setInt(1, idLivre);
-			 res = preparedStatement.executeQuery();
+			preparedStatement.setInt(1, idLivre);
+			res = preparedStatement.executeQuery();
 
 			while(res.next()) {
 				Emprunt f = new Emprunt(res.getInt("id"), res.getInt("idMembre"), res.getInt("idLivre"),
-						LocalDate.parse(res.getString("dateEmprunt")), LocalDate.parse(res.getString("dateRetour")));
+						LocalDate.parse(res.getString("dateEmprunt")));
 				f.setMembre(res.getInt("idMembre"),
 						res.getString("nom"), res.getString("prenom"), res.getString("adresse"),
 						res.getString("email"), res.getString("telephone"), res.getString("abonnement"));
@@ -169,7 +195,11 @@ public class EmpruntDaoImpl implements EmpruntDao{
 						res.getString("titre"),res.getString("auteur"),res.getString("isbn"));
 				emprunts.add(f);
 			}
-			System.out.println("GET: " + emprunts);
+			System.out.println("GET all emprunts non rendu by book : " +idLivre);
+			for(int    i=0; i<emprunts.size(); i++)
+			{
+				System.out.println(emprunts.get(i));
+			}
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la recuperation de la liste des non rendu", e);
 		}
@@ -191,8 +221,11 @@ public class EmpruntDaoImpl implements EmpruntDao{
 				emprunt.setId(res.getInt("id"));
 				emprunt.setIdLivre(res.getInt("idLivre"));
 				emprunt.setIdMembre(res.getInt("idMembre"));
-				emprunt.setDateEmprunt(LocalDate.parse(res.getString("dataEmprunt")));
-				emprunt.setDateRetour(LocalDate.parse(res.getString("dataRetour")));
+				emprunt.setDateEmprunt(LocalDate.parse(res.getString("dateEmprunt")));
+				String retour = res.getString("dateRetour");
+				if (retour!=null){
+					emprunt.setDateRetour(LocalDate.parse(retour));
+				}
 
 				emprunt.setMembre(res.getInt("idMembre"),
 						res.getString("nom"), res.getString("prenom"), res.getString("adresse"),
@@ -202,7 +235,7 @@ public class EmpruntDaoImpl implements EmpruntDao{
 
 			}
 			
-			System.out.println("GET: " + emprunt);
+			System.out.println("GET one emprunt: " + emprunt);
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la recuperation du livre: id=" + id, e);
 		} finally {
@@ -236,6 +269,7 @@ public class EmpruntDaoImpl implements EmpruntDao{
 			preparedStatement.setInt(1, idMembre);
 			preparedStatement.setInt(2, idLivre);
 			preparedStatement.setString(3, dateEmprunt.toString());
+			preparedStatement.setString(4,null); //assume one book can be kept for 3 months
 			preparedStatement.executeUpdate();
 			res = preparedStatement.getGeneratedKeys();
 
@@ -307,7 +341,6 @@ public class EmpruntDaoImpl implements EmpruntDao{
 			if(res.next()) {
 				resultat = res.getInt("count");
 			}
-			System.out.println("Compter le nombre des membres");
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors du compte des membres", e);
 		} finally {

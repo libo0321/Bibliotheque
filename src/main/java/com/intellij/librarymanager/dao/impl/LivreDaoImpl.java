@@ -49,7 +49,7 @@ public class LivreDaoImpl implements LivreDao{
 				livre.setIsbn(res.getString("isbn"));	
 			}
 			
-			System.out.println("GET: " + livre);
+			System.out.println("GET a book : " + livre);
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la recuperation du livre: id=" + id, e);
 		} finally {
@@ -90,7 +90,7 @@ public class LivreDaoImpl implements LivreDao{
 				id = res.getInt(1);				
 			}
 
-			System.out.println("CREATE a livre with titre : " + titre+"  auteur :"+auteur+"  isbn : "+isbn);
+			System.out.println("CREATE a book with title : " + titre+"  author :"+auteur+"  isbn : "+isbn);
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la creation du livre", e);
 		} finally {
@@ -118,15 +118,19 @@ public class LivreDaoImpl implements LivreDao{
 	public List<Livre> getList() throws DaoException {
 		List<Livre> livres = new ArrayList<>();
 		
-		try (Connection connection = ConnectionManager.getConnection();
-			 PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
-			 ResultSet res = preparedStatement.executeQuery();
-				){
+		try {
+			Connection connection = ConnectionManager.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+			ResultSet res = preparedStatement.executeQuery();
 			while(res.next()) {
-				Livre f = new Livre(res.getInt("id"), res.getString("titre"), res.getString("realisateur"), res.getString("isbn"));
+				Livre f = new Livre(res.getInt("id"), res.getString("titre"), res.getString("auteur"), res.getString("isbn"));
 				livres.add(f);
 			}
-			System.out.println("GET: " + livres);
+			System.out.println("GET all books : ");
+			for(int i=0; i<livres.size(); i++)
+			{
+				System.out.println(livres.get(i));
+			}
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la recuperation de la liste des livres", e);
 		}
@@ -144,7 +148,7 @@ public class LivreDaoImpl implements LivreDao{
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 			connection.close();
-			System.out.println("DELETE the book " );
+			System.out.println("DELETE the book with id="+id );
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la suppression du livre ", e);
 		}  finally {
@@ -174,7 +178,7 @@ public class LivreDaoImpl implements LivreDao{
 			preparedStatement.setInt(4, livre.getId());
 			preparedStatement.executeUpdate();
 
-			System.out.println("UPDATE: " + livre);
+			System.out.println("UPDATE the book : " + livre);
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors de la mise a jour du livre: " + livre, e);
 		} finally {
@@ -204,7 +208,6 @@ public class LivreDaoImpl implements LivreDao{
 			if(res.next()) {
 				resultat = res.getInt("count");
 			}
-			System.out.println("Compter le nombre des livres");
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors du compte des livres", e);
 		} finally {
