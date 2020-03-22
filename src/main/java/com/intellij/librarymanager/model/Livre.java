@@ -9,7 +9,6 @@ public class Livre {
     public Livre(){}
     public Livre(String titre, String auteur, String isbn)
     {
-        this();
         this.titre = titre;
         this.auteur = auteur;
         this.isbn = isbn;

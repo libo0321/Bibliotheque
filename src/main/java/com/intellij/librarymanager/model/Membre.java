@@ -13,7 +13,6 @@ public class Membre {
     }
 
     public Membre(String nom, String prenom, String adresse, String email, String telephone, Abonnement abonnement){
-        this();
         this.nom = nom;
         this.prenom = prenom;
         this.adresse = adresse;

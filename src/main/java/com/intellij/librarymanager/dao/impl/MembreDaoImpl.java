@@ -225,7 +225,6 @@ public class MembreDaoImpl implements MembreDao{
 			if(res.next()) {
 				resultat = res.getInt("count");
 			}
-			System.out.println("Compter le nombre des membres");
 		} catch (SQLException e) {
 			throw new DaoException("Probleme lors du compte des membres", e);
 		} finally {
