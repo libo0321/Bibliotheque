@@ -1,13 +1,10 @@
 package com.intellij.librarymanager.service.impl;
 
-import com.intellij.librarymanager.dao.LivreDao;
 import com.intellij.librarymanager.dao.MembreDao;
-import com.intellij.librarymanager.dao.impl.LivreDaoImpl;
 import com.intellij.librarymanager.dao.impl.MembreDaoImpl;
 import com.intellij.librarymanager.exception.DaoException;
 import com.intellij.librarymanager.exception.ServiceException;
 import com.intellij.librarymanager.model.Abonnement;
-import com.intellij.librarymanager.model.Livre;
 import com.intellij.librarymanager.model.Membre;
 import com.intellij.librarymanager.service.EmpruntService;
 import com.intellij.librarymanager.service.MembreService;

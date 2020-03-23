@@ -1,8 +1,6 @@
 package com.intellij.librarymanager.service.impl;
 
-import com.intellij.librarymanager.dao.EmpruntDao;
 import com.intellij.librarymanager.dao.LivreDao;
-import com.intellij.librarymanager.dao.impl.EmpruntDaoImpl;
 import com.intellij.librarymanager.dao.impl.LivreDaoImpl;
 import com.intellij.librarymanager.exception.ServiceException;
 import com.intellij.librarymanager.exception.DaoException;
