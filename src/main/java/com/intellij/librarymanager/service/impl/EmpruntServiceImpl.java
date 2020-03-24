@@ -122,12 +122,14 @@ public class EmpruntServiceImpl implements EmpruntService {
         EmpruntDao empruntDao = EmpruntDaoImpl.getInstance();
         try{
             if(empruntDao.getListCurrentByLivre(idLivre).isEmpty()==false){
-                return true;
+                System.out.println("Le livre ne peut pas être emprunté :"+idLivre);
+                return false;
             }
+            System.out.println("Le livre peut être emprunté :"+idLivre);
         }catch (DaoException e1){
             System.out.println(e1.getMessage());
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -136,20 +138,21 @@ public class EmpruntServiceImpl implements EmpruntService {
         int numbersOfEmprunt=-1;
         try {
             //defination by ourself
+            int numbers = empruntDao.getListCurrentByMembre(membre.getId()).size();
             switch (membre.getAbonnement())
             {
-                case BASIC:numbersOfEmprunt = 2;
-                        if(empruntDao.getListCurrentByMembre(membre.getId()).size()==numbersOfEmprunt)
-                        {return false;}break;
-                case PREMIUM:numbersOfEmprunt = 5;
-                        if(empruntDao.getListCurrentByMembre(membre.getId()).size()==numbersOfEmprunt)
-                        {return false;}break;
-                case VIP:numbersOfEmprunt = 20;
-                        if(empruntDao.getListCurrentByMembre(membre.getId()).size()==numbersOfEmprunt)
-                        {return false;}break;
+                case BASIC:numbersOfEmprunt=2;
+                        if(numbers>=numbersOfEmprunt)
+                        { System.out.println("L'utilisateur ne peut pas emprunter des livres");return false;}break;
+                case PREMIUM:numbersOfEmprunt=5;
+                        if(numbers>=numbersOfEmprunt)
+                        {System.out.println("L'utilisateur ne peut pas emprunter des livres");return false;}break;
+                case VIP:numbersOfEmprunt=20;
+                        if(numbers>=numbersOfEmprunt)
+                        {System.out.println("L'utilisateur ne peut pas emprunter des livres");return false;}break;
                 default:break;
             }
-
+            System.out.println("L'utilisateur peut toujours emprunter des livres");
         }catch (DaoException e1){
             System.out.println(e1.getMessage());
         }

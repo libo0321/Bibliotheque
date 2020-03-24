@@ -70,10 +70,10 @@ public class FillDatabase {
 
             stmt.execute("INSERT INTO emprunt(idMembre, idLivre, dateEmprunt, dateRetour) VALUES('2', '1', '2019-02-12', '2019-02-19')");
             stmt.execute("INSERT INTO emprunt(idMembre, idLivre, dateEmprunt, dateRetour) VALUES('2', '2', '2019-03-07', '2019-03-10')");
-            stmt.execute("INSERT INTO emprunt(idMembre, idLivre, dateEmprunt, dateRetour) VALUES('5', '3', '2019-03-01', '2019-03-31')");
-            stmt.execute("INSERT INTO emprunt(idMembre, idLivre, dateEmprunt, dateRetour) VALUES('7', '10', '2019-03-02', null)");
-            stmt.execute("INSERT INTO emprunt(idMembre, idLivre, dateEmprunt, dateRetour) VALUES('5', '2', '2019-03-02', '2019-03-21')");
-            stmt.execute("INSERT INTO emprunt(idMembre, idLivre, dateEmprunt, dateRetour) VALUES('4', '8', '2019-03-11', '2019-06-01')");
+            stmt.execute("INSERT INTO emprunt(idMembre, idLivre, dateEmprunt, dateRetour) VALUES('5', '3', '2019-03-01', NULL)");
+            stmt.execute("INSERT INTO emprunt(idMembre, idLivre, dateEmprunt, dateRetour) VALUES('7', '10', '2019-03-02', '2019-03-05')");
+            stmt.execute("INSERT INTO emprunt(idMembre, idLivre, dateEmprunt, dateRetour) VALUES('5', '2', '2019-03-02', NULL)");
+            stmt.execute("INSERT INTO emprunt(idMembre, idLivre, dateEmprunt, dateRetour) VALUES('4', '8', '2019-03-11', NULL)");
 
             connection.commit();
         } catch (SQLException e) {

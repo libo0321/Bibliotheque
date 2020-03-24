@@ -1,6 +1,8 @@
 package com.intellij.librarymanager.service.impl;
 
+import com.intellij.librarymanager.dao.EmpruntDao;
 import com.intellij.librarymanager.dao.LivreDao;
+import com.intellij.librarymanager.dao.impl.EmpruntDaoImpl;
 import com.intellij.librarymanager.dao.impl.LivreDaoImpl;
 import com.intellij.librarymanager.exception.ServiceException;
 import com.intellij.librarymanager.exception.DaoException;
@@ -36,12 +38,13 @@ public class LivreServiceImpl implements LivreService {
         List<Livre> livres = new ArrayList<>();
         EmpruntService empruntService = EmpruntServiceImpl.getInstance();
         try {
-            for (int id=0;id<livreDao.getList().size();id++)
+            int Size = livreDao.getList().size();
+            for (int id=1;id<=Size;id++)
             {
                 if(empruntService.isLivreDispo(id)==true)
                     livres.add(livreDao.getById(id));
             }
-
+            System.out.println("Liste des livres disponibles"+livres);
         }catch (DaoException e1){
             System.out.println(e1.getMessage());
         }
