@@ -39,10 +39,13 @@ public class LivreServiceImpl implements LivreService {
         EmpruntService empruntService = EmpruntServiceImpl.getInstance();
         try {
             int Size = livreDao.getList().size();
+
             for (int id=1;id<=Size;id++)
             {
-                if(empruntService.isLivreDispo(id))
-                    livres.add(livreDao.getById(id));
+                if(livreDao.getById(id)!=null){
+                    if(empruntService.isLivreDispo(id))
+                        livres.add(livreDao.getById(id));
+                }
             }
             System.out.println("Liste des livres disponibles"+livres);
         }catch (DaoException e1){

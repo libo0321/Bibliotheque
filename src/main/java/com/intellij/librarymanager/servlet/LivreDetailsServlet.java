@@ -44,10 +44,12 @@ public class LivreDetailsServlet extends HttpServlet {
                        HttpServletResponse response) throws ServletException, IOException{
         LivreService livreService = LivreServiceImpl.getInstance();
         try{
+            String ID = request.getParameter("id");
+            int id = Integer.parseInt(ID);
             String titre = request.getParameter("titre");
             String auteur = request.getParameter("auteur");
             String isbn = request.getParameter("isbn");
-            Livre livre = new Livre(titre,auteur,isbn);
+            Livre livre = new Livre(id, titre,auteur,isbn);
             livreService.update(livre);
         }catch (ServiceException e1){
             e1.printStackTrace();

@@ -38,11 +38,25 @@
 	          </div>
 	          <div class="input-field col s4">
 	            <select name="abonnement" class="browser-default">
-	              <!-- TODO : faire en sorte que l'option correspondant ? l'abonnement du membre soit s?lectionn?e par d?faut -->
-	              <!-- Pour cela, vous devez rajouter l'attribut selecter sur la balise <option> concern?e -->
-	              <option value="BASIC" ${(membre.abonnement == "BASIC") ? " selected" : ""}>Abonnement BASIC</option>
-	              <option value="PREMIUM" ${(membre.abonnement == "PREMIUM") ? " selected" : ""}>Abonnement PREMIUM</option>
-	              <option value="VIP" ${(membre.abonnement == "VIP") ? " selected" : ""}>Abonnement VIP</option>
+
+					<% if (membre.getAbonnement().toString().equals("BASIC")) { %>
+					<option value="BASIC" selected>Abonnement BASIC</option>
+					<% } else { %>
+					<option value="BASIC" >Abonnement BASIC</option>
+					<% } %>
+
+					<% if (membre.getAbonnement().toString().equals("PREMIUM")) { %>
+					<option value="PREMIUM" selected>Abonnement PREMIUM</option>
+					<% } else { %>
+					<option value="PREMIUM" >Abonnement PREMIUM</option>
+					<% } %>
+
+					<% if (membre.getAbonnement().toString().equals("VIP")) { %>
+					<option value="VIP" selected>Abonnement VIP</option>
+					<% } else { %>
+					<option value="VIP" >Abonnement VIP</option>
+					<% } %>
+
 	            </select>
 	          </div>
 	        </div>

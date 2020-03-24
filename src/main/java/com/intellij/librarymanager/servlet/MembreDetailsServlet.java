@@ -48,6 +48,8 @@ public class MembreDetailsServlet extends HttpServlet {
                        HttpServletResponse response) throws ServletException, IOException{
         MembreService membreService = MembreServiceImpl.getInstance();
         try{
+            String ID = request.getParameter("id");
+            int id = Integer.parseInt(ID);
             String nom = request.getParameter("nom");
             String prenom = request.getParameter("prenom");
             String adresse = request.getParameter("adresse");
@@ -56,7 +58,7 @@ public class MembreDetailsServlet extends HttpServlet {
             String abonnement = request.getParameter("abonnement");
             Abonnement abonnement1 = Abonnement.valueOf(abonnement);
 
-            Membre membre = new Membre(nom,prenom,adresse,email,telephone,abonnement1);
+            Membre membre = new Membre(id,nom,prenom,adresse,email,telephone,abonnement1);
             membreService.update(membre);
         }catch (ServiceException e1){
             e1.printStackTrace();

@@ -136,21 +136,24 @@ public class EmpruntServiceImpl implements EmpruntService {
         int numbersOfEmprunt=-1;
         try {
             //defination by ourself
-            int numbers = empruntDao.getListCurrentByMembre(membre.getId()).size();
-            switch (membre.getAbonnement())
+            if(membre.getId()!=null)
             {
-                case BASIC:numbersOfEmprunt=2;
+                int numbers = empruntDao.getListCurrentByMembre(membre.getId()).size();
+                switch (membre.getAbonnement())
+                {
+                    case BASIC:numbersOfEmprunt=2;
                         if(numbers>=numbersOfEmprunt)
                         { System.out.println("L'utilisateur ne peut pas emprunter des livres");return false;}break;
-                case PREMIUM:numbersOfEmprunt=5;
+                    case PREMIUM:numbersOfEmprunt=5;
                         if(numbers>=numbersOfEmprunt)
                         {System.out.println("L'utilisateur ne peut pas emprunter des livres");return false;}break;
-                case VIP:numbersOfEmprunt=20;
+                    case VIP:numbersOfEmprunt=20;
                         if(numbers>=numbersOfEmprunt)
                         {System.out.println("L'utilisateur ne peut pas emprunter des livres");return false;}break;
-                default:break;
+                    default:break;
+                }
+                System.out.println("L'utilisateur peut toujours emprunter des livres");
             }
-            System.out.println("L'utilisateur peut toujours emprunter des livres");
         }catch (DaoException e1){
             System.out.println(e1.getMessage());
         }

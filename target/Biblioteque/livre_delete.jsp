@@ -25,7 +25,7 @@
           <% Livre livre = (Livre) request.getAttribute("livre");%>
       <h5>Suppression du livre <%=livre.getId()%></h5>
         <div class="row">
-          <p>Etes-vous sur de vouloir supprimer le livre <%=livre.getTitre()%> de <%=livre.getAuteur()%> (code <%=livre.getIsbn()%>) ?</p>
+          <p>Etes-vous sur de vouloir supprimer le livre "<%=livre.getTitre()%>" de <%=livre.getAuteur()%> (code <%=livre.getIsbn()%>) ?</p>
 	      <form action="/Biblioteque_war_exploded/livre_delete" method="post" class="col s12">
             <input type="hidden" value="<%=livre.getId()%>" name="id">
 	        <div class="row center">

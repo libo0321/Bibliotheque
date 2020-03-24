@@ -23,9 +23,10 @@
       </div>
       <div class="row">
       <div class="container">
-      <h5>D?tails du livre n?${livre.id}</h5>
+          <% Livre livre = (Livre) request.getAttribute("livre");%>
+      <h5>D?tails du livre <%=livre.getId()%></h5>
         <div class="row">
-            <% Livre livre = (Livre) request.getAttribute("livre");%>
+
 	      <form action="/Biblioteque_war_exploded/livre_details?id=<%=livre.getId()%>" method="post" class="col s12">
 	        <div class="row">
 	          <div class="input-field col s12">
@@ -50,7 +51,7 @@
 	      </form>
 	      
 	      <form action="/Biblioteque_war_exploded/livre_delete" method="get" class="col s12">
-	        <input type="hidden" value="<%=livre.getId()%>" name="id"> <!-- TODO : remplacer idDuLivre par l'id du livre -->
+	        <input type="hidden" value="<%=livre.getId()%>" name="id">
 	        <div class="row center">
 	          <button class="btn waves-effect waves-light red" type="submit">Supprimer le livre
 	            <i class="material-icons right">delete</i>

@@ -31,17 +31,31 @@ public class EmpruntAddServlet extends HttpServlet {
         MembreService membreService = MembreServiceImpl.getInstance();
         List<Livre> livres = new ArrayList<>();
         List<Membre> membres = new ArrayList<>();
+        List<Livre> livres1 = new ArrayList<>();
+        List<Membre> membres1 = new ArrayList<>();
         try {
             livres = livreService.getListDispo();
             membres = membreService.getListMembreEmpruntPossible();
-
+            for(int i=0;i<livres.size();i++){
+                if(livres.get(i).getId()!=null)
+                {
+                    livres1.add(livres.get(i));
+                }
+            }
+            for(int i=0;i<membres.size();i++)
+            {
+                if(membres.get(i).getId()!=null)
+                {
+                    membres1.add(membres.get(i));
+                }
+            }
 
         } catch (ServiceException e1) {
             e1.printStackTrace();
         }
 
-        request.setAttribute("livres", livres);
-        request.setAttribute("membres", membres);
+        request.setAttribute("livres", livres1);
+        request.setAttribute("membres", membres1);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/emprunt_add.jsp");
         dispatcher.forward(request, response);
