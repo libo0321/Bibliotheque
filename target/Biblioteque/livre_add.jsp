@@ -21,7 +21,7 @@
       </div>
       <div class="row">
       <div class="container">
-      <h5>Cr?ation d'un nouveau livre</h5>
+      <h5>Cr¨¦ation d'un nouveau livre</h5>
         <div class="row">
 	      <form action="/Biblioteque_war_exploded/livre_add" method="post" class="col s12">
 	        <div class="row">

@@ -26,11 +26,11 @@ public class LivreDetailsServlet extends HttpServlet {
         Livre livre = new Livre();
         List<Emprunt> emprunts = new ArrayList<>();
         try{
-            String id = request.getParameter("id");
-            int ID = Integer.parseInt(id);
-            System.out.println(ID);
-            livre = livreService.getById(ID);
-            emprunts = empruntService.getListCurrentByLivre(ID);
+            String ID = request.getParameter("id");
+            int id = Integer.parseInt(ID);
+
+            livre = livreService.getById(id);
+            emprunts = empruntService.getListCurrentByLivre(id);
         }catch (ServiceException e1){
             e1.printStackTrace();
         }

@@ -24,16 +24,16 @@
       <div class="row">
       <div class="container">
 		  <% Membre membre = (Membre) request.getAttribute("membre");%>
-      <h5>Details du membre <%=membre.getId()%></h5> <!-- TODO : remplacer 007 par l'id du membre -->
+      <h5>Details du membre <%=membre.getId()%></h5>
         <div class="row">
-	      <form action="/Biblioteque_war_exploded/membre_details?id=<%=membre.getId()%>" method="post" class="col s12"> <!-- TODO : remplacer idDuMembre par l'id du membre -->
+	      <form action="/Biblioteque_war_exploded/membre_details?id=<%=membre.getId()%>" method="post" class="col s12">
 	        <div class="row">
 	          <div class="input-field col s4">
-	            <input id="nom" type="text" value="nomDuMembre" name="nom"> <!-- TODO : remplacer nomDuMembre par le nom du membre -->
+	            <input id="nom" type="text" value="<%=membre.getNom()%>" name="nom">
 	            <label for="nom">Nom</label>
 	          </div>
 	          <div class="input-field col s4">
-	            <input id="prenom" type="text" value="prenomDuMembre" name="prenom"> <!-- TODO : remplacer prenomDuMembre par le pr?nom du membre -->
+	            <input id="prenom" type="text" value="<%=membre.getPrenom()%>" name="prenom">
 	            <label for="prenom">Pr?nom</label>
 	          </div>
 	          <div class="input-field col s4">
@@ -48,17 +48,17 @@
 	        </div>
 	        <div class="row">
 	          <div class="input-field col s12">
-	            <input id="adresse" type="text" value="adresseDuMembre" name="adresse"> <!-- TODO : remplacer adresseDuMembre par l'adresse du membre -->
+	            <input id="adresse" type="text" value="<%=membre.getAdresse()%>" name="adresse">
 	            <label for="adresse">Adresse</label>
 	          </div>
 	        </div>
 	        <div class="row">
 	          <div class="input-field col s6">
-	            <input id="email" type="email" value="emailDuMembre" name="email"> <!-- TODO : remplacer emailDuMembre par l'email du membre -->
+	            <input id="email" type="email" value="<%=membre.getEmail()%>" name="email">
 	            <label for="email">E-mail</label>
 	          </div>
 	          <div class="input-field col s6">
-	            <input id="telephone" type="tel" value="telephoneDuMembre" name="telephone"> <!-- TODO : remplacer telephoneDuMembre par le t?l?phone du membre -->
+	            <input id="telephone" type="tel" value="<%=membre.getTelephone()%>" name="telephone">
 	            <label for="telephone">T?l?phone</label>
 	          </div>
 	        </div>
@@ -69,7 +69,7 @@
 	      </form>
 	      
 	      <form action="/Biblioteque_war_exploded/membre_delete" method="get" class="col s12">
-	        <input type="hidden" value="idDuMembre" name="id"> <!-- TODO : remplacer idDuMembre par l'id du membre -->
+	        <input type="hidden" value="<%=membre.getId()%>" name="id">
 	        <div class="row center">
 	          <button class="btn waves-effect waves-light red" type="submit">Supprimer le membre
 	            <i class="material-icons right">delete</i>
@@ -97,7 +97,25 @@
                     <a href="emprunt_return?id=idDeLEmprunt"><ion-icon class="table-item" name="log-in"></a>
                   </td>
                 </tr>
+					<% List<Emprunt> emprunts1 = (List) request.getAttribute("emprunts");
+						for(int i=0; i<emprunts1.size(); i++)
+						{%>
+					<tr>
+						<td><%=emprunts1.get(i).getMembre().getNom()+" "+emprunts1.get(i).getMembre().getPrenom() %></td>
+						<td><%=emprunts1.get(i).getDateEmprunt() %></td>
+
+						<% if (emprunts1.get(i).getDateRetour()!=null) { %>
+						<td><%=emprunts1.get(i).getDateRetour() %></td>
+						<% } else { %>
+						<td><a href="emprunt_return?id=<%=emprunts1.get(i).getId()%>">retourner</a></td>
+						<% } %>
+					</tr>
+					<%}
+					%>
+
                 </c:forEach>
+
+
 
 				<!-- TODO : parcourir la liste des emprunts en cours pour ce membre et les afficher selon la structure d'exemple ci-dessus -->
               </tbody>

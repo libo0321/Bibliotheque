@@ -53,7 +53,7 @@
                 <td><%=membres.get(i).getAdresse() %></td>
                 <td><%=membres.get(i).getEmail() %></td>
                 <td><%=membres.get(i).getTelephone() %></td>
-                <td class="center"><a href="membre_details?id=idDuMembre">detail</a></td>
+                <td class="center"><a href="membre_details?id=<%=membres.get(i).getId()%>">detail</a></td>
               </tr>
               <%}
               %>

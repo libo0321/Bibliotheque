@@ -26,19 +26,22 @@ public class MembreDeleteServlet extends HttpServlet {
     {
         MembreService membreService = MembreServiceImpl.getInstance();
         EmpruntService empruntService = EmpruntServiceImpl.getInstance();
-        List<Membre> membres = new ArrayList<>();
+        Membre membre = new Membre();
         List<Emprunt>emprunts = new ArrayList<>();
         try{
             emprunts =  empruntService.getListCurrent();
             for(int i = 0;i<emprunts.size();i++)
             {
-                Membre membre = membreService.getById(emprunts.get(i).getIdMembre());
-                membres.add(membre);
+                String ID = request.getParameter("id");
+                int id = Integer.parseInt(ID);
+                membre = membreService.getById(id);
+                emprunts = empruntService.getListCurrentByMembre(id);
             }
         }catch (ServiceException e1){
             e1.printStackTrace();
         }
-        request.setAttribute("membres",membres);
+        request.setAttribute("membre",membre);
+        request.setAttribute("emprunts",emprunts);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/membre_delete.jsp");
         dispatcher.forward(request, response);
     }
@@ -53,6 +56,6 @@ public class MembreDeleteServlet extends HttpServlet {
         }catch (ServiceException e1){
             e1.printStackTrace();
         }
-        response.sendRedirect("membre_list.jsp");
+        response.sendRedirect("membre_list");
     }
 }

@@ -43,6 +43,5 @@ public class LivreAddServlet extends HttpServlet {
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response) throws ServletException, IOException{
         doGet(request,response);
-        response.sendRedirect("livre_list.jsp");
     }
 }

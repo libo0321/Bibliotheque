@@ -20,9 +20,14 @@ public class EmpruntListServlet extends HttpServlet{
 
         public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EmpruntService EmpruntService = EmpruntServiceImpl.getInstance();
+
         List<Emprunt> emprunts = new ArrayList<>();
         try {
-            emprunts = EmpruntService.getListCurrent();
+            String All = "all";
+            if(All.equals(request.getParameter("show")))
+                emprunts = EmpruntService.getList();
+            else
+                emprunts = EmpruntService.getListCurrent();
         } catch (ServiceException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -107,7 +107,7 @@
 						<% if (emprunts1.get(i).getDateRetour()!=null) { %>
 						<td><%=emprunts1.get(i).getDateRetour() %></td>
 						<% } else { %>
-						<td><a href="emprunt_return?id=+<%=emprunts1.get(i).getId()%>">retourner</a></td>
+						<td><a href="emprunt_return?id=<%=emprunts1.get(i).getId()%>">retourner</a></td>
 						<% } %>
 					</tr>
 					<%}

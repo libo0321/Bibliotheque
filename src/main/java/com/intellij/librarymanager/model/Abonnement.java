@@ -4,7 +4,7 @@ public enum  Abonnement {
     BASIC(0),PREMIUM(1),VIP(2);
     private int index;
 
-    private Abonnement(int index)
+    Abonnement(int index)
     {
         this.index = index;
     }

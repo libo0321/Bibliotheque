@@ -41,7 +41,7 @@ public class MembreServiceImpl implements MembreService {
             for(int id=1;id<=Size;id++)
             {
                 if(membreDao.getById(id)!=null){
-                    if(empruntService.isEmpruntPossible(membreDao.getById(id))==true)
+                    if(empruntService.isEmpruntPossible(membreDao.getById(id)))
                     {
                         membres.add(membreDao.getById(id));
                     }
@@ -77,10 +77,8 @@ public class MembreServiceImpl implements MembreService {
                 throw new ServiceException("le nom ou le prenom ne peut pas vide.");
             i = membreDao.create(membre.getNom().toUpperCase(),membre.getPrenom(),membre.getAdresse(),
                                 membre.getEmail(),membre.getTelephone(),Abonnement.PREMIUM);
-        }catch (DaoException e1){
+        }catch (DaoException | ServiceException e1){
             System.out.println(e1.getMessage());
-        }catch (ServiceException e2){
-            System.out.println(e2.getMessage());
         }
         return i;
     }
@@ -94,12 +92,9 @@ public class MembreServiceImpl implements MembreService {
             if(membre.getNom()==null||membre.getPrenom()==null)
                 throw new ServiceException("le nom ou le prenom ne peut pas vide.");
             membreDao.update(membre1);
-        }catch (DaoException e1){
+        }catch (DaoException | ServiceException e1){
             System.out.println(e1.getMessage());
-        }catch (ServiceException e2){
-            System.out.println(e2.getMessage());
         }
-        return;
     }
     @Override
     public void delete(int id) throws ServiceException{
@@ -111,7 +106,6 @@ public class MembreServiceImpl implements MembreService {
         } catch (NumberFormatException e2){
             throw new ServiceException("Erreur lors du id"+id,e2);
         }
-        return;
     }
     @Override
     public int count() throws ServiceException{

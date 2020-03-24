@@ -25,14 +25,14 @@
           <% Membre membre = (Membre) request.getAttribute("membre");%>
       <h5>Suppression du membre <%=membre.getId()%></h5>
         <div class="row">
-          <p>Etes-vous sur de vouloir supprimer la fiche de <%=membre.getPrenom()%>+" "+<%=membre.getNom()%>  ?</p>
+          <p>Etes-vous sur de vouloir supprimer la fiche de <%=membre.getPrenom()%> <%=membre.getNom()%>  ?</p>
 	      <form action="/Biblioteque_war_exploded/membre_delete" method="post" class="col s12">
-            <input type="hidden" value="<%=membre.getId()%> " name="id">
+            <input type="hidden" value="<%=membre.getId()%>" name="id">
 	        <div class="row center">
 	          <button class="btn waves-effect waves-light red" type="submit" name="action">Supprimer
 	            <i class="material-icons right">delete</i>
 	          </button>
-	          <a class="btn waves-effect waves-light orange" href="/Biblioteque_war_exploded/membre_details?id=+<%=membre.getId()%>">Annuler</a>
+	          <a class="btn waves-effect waves-light orange" href="/Biblioteque_war_exploded/membre_details?id=<%=membre.getId()%>">Annuler</a>
 	        </div>
 	      </form>
 	    </div>	    

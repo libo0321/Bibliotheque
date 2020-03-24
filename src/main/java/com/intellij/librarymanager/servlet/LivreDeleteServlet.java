@@ -24,19 +24,24 @@ public class LivreDeleteServlet extends HttpServlet {
     {
         LivreService livreService = LivreServiceImpl.getInstance();
         EmpruntService empruntService = EmpruntServiceImpl.getInstance();
-        List<Livre>livres = new ArrayList<>();
+        Livre livre = new Livre();
         List<Emprunt>emprunts = new ArrayList<>();
         try{
             emprunts =  empruntService.getListCurrent();
             for(int i = 0;i<emprunts.size();i++)
             {
-                Livre livre = livreService.getById(emprunts.get(i).getIdLivre());
-                livres.add(livre);
+                String ID = request.getParameter("id");
+                int id = Integer.parseInt(ID);
+
+                livre = livreService.getById(id);
+                emprunts = empruntService.getListCurrentByLivre(id);
+
             }
         }catch (ServiceException e1){
             e1.printStackTrace();
         }
-        request.setAttribute("livre",livres);
+        request.setAttribute("livre",livre);
+        request.setAttribute("emprunts",emprunts);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/livre_delete.jsp");
         dispatcher.forward(request, response);
     }

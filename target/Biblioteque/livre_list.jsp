@@ -47,7 +47,7 @@
                         <td><%=livres.get(i).getTitre() %></td>
                         <td><%=livres.get(i).getAuteur() %></td>
                         <td><%=livres.get(i).getIsbn() %></td>
-                        <td class="center"><a href="livre_details?id=+<%=livres.get(i).getId()%>">detail</a></td>
+                        <td class="center"><a href="livre_details?id=<%=livres.get(i).getId()%>">detail</a></td>
                     </tr>
                     <%}
                     %>

@@ -1,3 +1,4 @@
+<%@ page import="com.intellij.librarymanager.model.Membre" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>
 <html>
@@ -21,16 +22,17 @@
       </div>
       <div class="row">
       <div class="container">
-      <h5>Suppression du membre n?312</h5> <!-- TODO : remplacer 312 par l'id du membre -->
+          <% Membre membre = (Membre) request.getAttribute("membre");%>
+      <h5>Suppression du membre <%=membre.getId()%></h5>
         <div class="row">
-          <p>?tes-vous s?r de vouloir supprimer la fiche de prenomDuMembre nomDuMembre ?</p> <!-- TODO : remplacer prenomDuMembre et nomDuMembre par les valeurs correspondantes -->
+          <p>Etes-vous sur de vouloir supprimer la fiche de <%=membre.getPrenom()%> <%=membre.getNom()%>  ?</p>
 	      <form action="/Biblioteque_war_exploded/membre_delete" method="post" class="col s12">
-            <input type="hidden" value="idDuMembre" name="id"> <!-- TODO : remplacer idDuMembre par l'id du membre -->
+            <input type="hidden" value="<%=membre.getId()%>" name="id">
 	        <div class="row center">
 	          <button class="btn waves-effect waves-light red" type="submit" name="action">Supprimer
 	            <i class="material-icons right">delete</i>
 	          </button>
-	          <a class="btn waves-effect waves-light orange" href="/Biblioteque_war_exploded/membre_details?id=idDuMembre">Annuler</a> <!-- TODO : remplacer idDuMembre par l'id du membre -->
+	          <a class="btn waves-effect waves-light orange" href="/Biblioteque_war_exploded/membre_details?id=<%=membre.getId()%>">Annuler</a>
 	        </div>
 	      </form>
 	    </div>	    

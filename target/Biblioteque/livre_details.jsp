@@ -26,20 +26,20 @@
       <h5>D?tails du livre n?${livre.id}</h5>
         <div class="row">
             <% Livre livre = (Livre) request.getAttribute("livre");%>
-	      <form action="/Biblioteque_war_exploded/livre_details?id=+<%=livre.getId()%>" method="post" class="col s12"> <!-- TODO : remplacer idDuLivre par l'id du livre -->
+	      <form action="/Biblioteque_war_exploded/livre_details?id=<%=livre.getId()%>" method="post" class="col s12">
 	        <div class="row">
 	          <div class="input-field col s12">
-	            <input id="titre" type="text" value="<%=livre.getId()%>" name="titre"> <!-- TODO : remplacer titreDuLivre par le titre du livre -->
+	            <input id="titre" type="text" value="<%=livre.getTitre()%>" name="titre">
 	            <label for="titre">Titre</label>
 	          </div>
 	        </div>
 	        <div class="row">
 	          <div class="input-field col s6">
-	            <input id="auteur" type="text" value="<%=livre.getAuteur()%>" name="auteur"> <!-- TODO : remplacer auteurDuLivre par l'auteur du livre -->
+	            <input id="auteur" type="text" value="<%=livre.getAuteur()%>" name="auteur">
 	            <label for="auteur">Auteur</label>
 	          </div>
 	          <div class="input-field col s6">
-	            <input id="isbn" type="text" value="<%=livre.getIsbn()%>" name="isbn"> <!-- TODO : remplacer isbnDuLivre par l'isbn du livre -->
+	            <input id="isbn" type="text" value="<%=livre.getIsbn()%>" name="isbn">
 	            <label for="isbn">ISBN 13</label>
 	          </div>
 	        </div>
@@ -88,7 +88,7 @@
                     <% if (emprunts1.get(i).getDateRetour()!=null) { %>
                     <td><%=emprunts1.get(i).getDateRetour() %></td>
                     <% } else { %>
-                    <td><a href="emprunt_return?id=+<%=emprunts1.get(i).getId()%>">retourner</a></td>
+                    <td><a href="emprunt_return?id=<%=emprunts1.get(i).getId()%>">retourner</a></td>
                     <% } %>
                 </tr>
                 <%}

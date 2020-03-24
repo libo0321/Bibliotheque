@@ -87,7 +87,6 @@ public class EmpruntServiceImpl implements EmpruntService {
         }catch (DaoException e1){
             System.out.println(e1.getMessage());
         }
-        return;
     }
 
     @Override
@@ -102,7 +101,6 @@ public class EmpruntServiceImpl implements EmpruntService {
         }catch (DaoException e1){
             System.out.println(e1.getMessage());
         }
-        return;
     }
 
     @Override
@@ -121,7 +119,7 @@ public class EmpruntServiceImpl implements EmpruntService {
     public boolean isLivreDispo(int idLivre) throws ServiceException {
         EmpruntDao empruntDao = EmpruntDaoImpl.getInstance();
         try{
-            if(empruntDao.getListCurrentByLivre(idLivre).isEmpty()==false){
+            if(!empruntDao.getListCurrentByLivre(idLivre).isEmpty()){
                 System.out.println("Le livre ne peut pas être emprunté :"+idLivre);
                 return false;
             }
